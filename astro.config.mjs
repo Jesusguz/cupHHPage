@@ -1,15 +1,15 @@
 import { defineConfig } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
-import tailwindcss from '@tailwindcss/vite'; // Cambiamos esto
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   output: 'server',
   adapter: cloudflare({
-    mode: 'directory',
+    mode: 'smart', // Cambiamos de 'directory' a 'smart'
   }),
-  integrations: [react()], // Quitamos 'tailwind()' de aquí
+  integrations: [react()],
   vite: {
-    plugins: [tailwindcss()], // Agregamos el plugin de Vite
+    plugins: [tailwindcss()],
   }
 });
