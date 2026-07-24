@@ -1,18 +1,12 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
-
-import react from '@astrojs/react';
-import tailwindcss from '@tailwindcss/vite';
 import cloudflare from '@astrojs/cloudflare';
+import react from '@astrojs/react';
+import tailwind from '@astrojs/tailwind';
 
-// https://astro.build/config
 export default defineConfig({
-  output: 'server',
-  integrations: [react()],
-
-  vite: {
-    plugins: [tailwindcss()]
-  },
-
-  adapter: cloudflare()
+  output: 'server', // ESTO ES VITAL: Le dice a Astro que no es estática, sino dinámica.
+  adapter: cloudflare({
+    mode: 'directory', // Asegura que Cloudflare Pages entienda la estructura.
+  }),
+  integrations: [react(), tailwind()],
 });
