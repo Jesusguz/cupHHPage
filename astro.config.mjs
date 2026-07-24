@@ -4,9 +4,9 @@ import react from '@astrojs/react';
 import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
-  output: 'server', // ESTO ES VITAL: Le dice a Astro que no es estática, sino dinámica.
+  output: 'server',
   adapter: cloudflare({
-    mode: 'directory', // Asegura que Cloudflare Pages entienda la estructura.
+    mode: 'directory',
   }),
   integrations: [react(), tailwind()],
 });
