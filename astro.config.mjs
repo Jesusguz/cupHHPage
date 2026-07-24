@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   output: 'server',
   adapter: cloudflare({
-    mode: 'smart', // Cambiamos de 'directory' a 'smart'
+    mode: 'bundled', // ESTO ES EL CAMBIO CLAVE
   }),
   integrations: [react()],
   vite: {
