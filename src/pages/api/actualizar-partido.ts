@@ -9,7 +9,19 @@ export const POST: APIRoute = async ({ request, locals }) => {
       return new Response(JSON.stringify({ error: 'Faltan datos' }), { status: 400 });
     }
 
-    const db = locals.runtime.env.DB;
+    let db = locals.runtime?.env?.DB;
+    if(!db) {
+        try {
+            const { env: workersEnv } = await import('cloudflare:workers');
+            db = workersEnv.DB;
+        } catch(e) {
+            console.error("Could not import cloudflare:workers", e);
+        }
+    }
+
+    if (!db) {
+        return new Response(JSON.stringify({ error: 'Database not bound' }), { status: 500 });
+    }
 
     // Obtener partido
     const partidoStmt = await db.prepare('SELECT * FROM Partidos WHERE id = ?').bind(partidoId).first();

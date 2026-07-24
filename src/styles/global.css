@@ -6,7 +6,7 @@
   --color-emerald-400: #68d88c;
 }
 
-/* El resto de tu CSS está perfecto */
+/* Base styles for dark mode by default */
 :root {
   --bg-color: #121212;
   --text-color: #f3f4f6;

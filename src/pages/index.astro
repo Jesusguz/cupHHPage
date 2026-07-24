@@ -1,22 +1,85 @@
 ---
-// Prueba de conexión a la Base de Datos
-const { DB } = Astro.locals.runtime.env;
+import Layout from '../layouts/Layout.astro';
+import { TablaGeneral } from '../components/TablaGeneral';
+import { LeadersSidebar } from '../components/LeadersSidebar';
+import { AdminForm } from '../components/AdminForm';
+
+import { getRouteContext } from 'astro/app';
+const env = Astro.locals.runtime?.env || {};
+// We'll use D1 from context, adapting if needed based on Astro 5 changes.
+// The cloudflare adapter passes env down in different ways.
+
+let db = env.DB;
+if(!db) {
+    try {
+        const { env: workersEnv } = await import('cloudflare:workers');
+        db = workersEnv.DB;
+    } catch (e) {
+        console.warn("Could not import cloudflare:workers", e);
+    }
+}
 
 let equipos = [];
-let error = null;
+let jugadores = [];
+let partidosPendientes = [];
 
-try {
-  const result = await DB.prepare("SELECT * FROM Equipos").all();
-  equipos = result.results;
-} catch (e) {
-  error = e.message;
+if (db) {
+  const { results: resEquipos } = await db.prepare('SELECT * FROM Equipos ORDER BY pts DESC').all();
+  equipos = resEquipos;
+
+  const { results: resJugadores } = await db.prepare(`
+    SELECT j.*, e.nombre as equipo_nombre
+    FROM Jugadores j
+    LEFT JOIN Equipos e ON j.equipo_id = e.id
+  `).all();
+  jugadores = resJugadores;
+
+  const { results: resPartidos } = await db.prepare(`
+    SELECT p.*, el.nombre as local_nombre, ev.nombre as visitante_nombre
+    FROM Partidos p
+    LEFT JOIN Equipos el ON p.local_id = el.id
+    LEFT JOIN Equipos ev ON p.visitante_id = ev.id
+    WHERE p.estado = 'pendiente'
+  `).all();
+  partidosPendientes = resPartidos;
+} else {
+  console.warn("D1 Database not bound.");
 }
+
+const isAdmin = Astro.url.searchParams.get('admin') === 'haxel';
+
 ---
 
-<html>
-  <body>
-    <h1>Prueba de Conexión D1</h1>
-    {error && <p style="color:red">Error: {error}</p>}
-    <pre>{JSON.stringify(equipos, null, 2)}</pre>
-  </body>
-</html>
+<Layout title="Copa Haxel Hernández">
+  <main class="pb-16">
+    <section class="relative w-full h-[400px] flex items-center justify-center bg-black overflow-hidden border-b-4 border-emerald-500">
+      <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518605368461-1ee12523dc70?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-30"></div>
+      <div class="relative z-10 text-center px-4">
+        <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-4 drop-shadow-lg">
+          Copa Haxel Hernández
+        </h1>
+        <p class="text-xl md:text-2xl text-emerald-400 font-medium drop-shadow-md">
+          Honrando su legado en la cancha. Ejido Ignacio Zaragoza.
+        </p>
+      </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 mt-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2">
+          <TablaGeneral equipos={equipos} client:load />
+
+          {isAdmin && (
+            <div class="mt-12">
+              <AdminForm partidos={partidosPendientes} client:load />
+            </div>
+          )}
+        </div>
+
+        <div class="lg:col-span-1">
+          <LeadersSidebar jugadores={jugadores} client:load />
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
