@@ -9,14 +9,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
       return new Response(JSON.stringify({ error: 'Faltan datos' }), { status: 400 });
     }
 
-    let db = locals.runtime?.env?.DB;
-    if(!db) {
-        try {
-            const { env: workersEnv } = await import('cloudflare:workers');
-            db = workersEnv.DB;
-        } catch(e) {
-            console.error("Could not import cloudflare:workers", e);
-        }
+    let db;
+    try {
+        // @ts-ignore
+        const { env } = await import('cloudflare:workers');
+        db = env.DB;
+    } catch(e) {
+        db = locals.runtime?.env?.DB;
     }
 
     if (!db) {

@@ -4,19 +4,13 @@ import { TablaGeneral } from '../components/TablaGeneral';
 import { LeadersSidebar } from '../components/LeadersSidebar';
 import { AdminForm } from '../components/AdminForm';
 
-import { getRouteContext } from 'astro/app';
-const env = Astro.locals.runtime?.env || {};
-// We'll use D1 from context, adapting if needed based on Astro 5 changes.
-// The cloudflare adapter passes env down in different ways.
-
-let db = env.DB;
-if(!db) {
-    try {
-        const { env: workersEnv } = await import('cloudflare:workers');
-        db = workersEnv.DB;
-    } catch (e) {
-        console.warn("Could not import cloudflare:workers", e);
-    }
+let db;
+try {
+  // @ts-ignore
+  const { env } = await import('cloudflare:workers');
+  db = env.DB;
+} catch (e) {
+  db = Astro.locals.runtime?.env?.DB;
 }
 
 let equipos = [];
@@ -24,24 +18,28 @@ let jugadores = [];
 let partidosPendientes = [];
 
 if (db) {
-  const { results: resEquipos } = await db.prepare('SELECT * FROM Equipos ORDER BY pts DESC').all();
-  equipos = resEquipos;
+  try {
+    const { results: resEquipos } = await db.prepare('SELECT * FROM Equipos ORDER BY pts DESC').all();
+    equipos = resEquipos || [];
 
-  const { results: resJugadores } = await db.prepare(`
-    SELECT j.*, e.nombre as equipo_nombre
-    FROM Jugadores j
-    LEFT JOIN Equipos e ON j.equipo_id = e.id
-  `).all();
-  jugadores = resJugadores;
+    const { results: resJugadores } = await db.prepare(`
+      SELECT j.*, e.nombre as equipo_nombre
+      FROM Jugadores j
+      LEFT JOIN Equipos e ON j.equipo_id = e.id
+    `).all();
+    jugadores = resJugadores || [];
 
-  const { results: resPartidos } = await db.prepare(`
-    SELECT p.*, el.nombre as local_nombre, ev.nombre as visitante_nombre
-    FROM Partidos p
-    LEFT JOIN Equipos el ON p.local_id = el.id
-    LEFT JOIN Equipos ev ON p.visitante_id = ev.id
-    WHERE p.estado = 'pendiente'
-  `).all();
-  partidosPendientes = resPartidos;
+    const { results: resPartidos } = await db.prepare(`
+      SELECT p.*, el.nombre as local_nombre, ev.nombre as visitante_nombre
+      FROM Partidos p
+      LEFT JOIN Equipos el ON p.local_id = el.id
+      LEFT JOIN Equipos ev ON p.visitante_id = ev.id
+      WHERE p.estado = 'pendiente'
+    `).all();
+    partidosPendientes = resPartidos || [];
+  } catch (err) {
+    console.error("Database query failed", err);
+  }
 } else {
   console.warn("D1 Database not bound.");
 }
