@@ -4,14 +4,8 @@ import { TablaGeneral } from '../components/TablaGeneral';
 import { LeadersSidebar } from '../components/LeadersSidebar';
 import { AdminForm } from '../components/AdminForm';
 
-let db;
-try {
-  // @ts-ignore
-  const { env } = await import('cloudflare:workers');
-  db = env.DB;
-} catch (e) {
-  db = Astro.locals.runtime?.env?.DB;
-}
+// Safe extraction of DB from Astro.locals
+let db = Astro.locals.runtime?.env?.DB;
 
 let equipos = [];
 let jugadores = [];
@@ -41,7 +35,7 @@ if (db) {
     console.error("Database query failed", err);
   }
 } else {
-  console.warn("D1 Database not bound.");
+  console.warn("D1 Database not bound. Make sure Wrangler injected the bindings properly.");
 }
 
 const isAdmin = Astro.url.searchParams.get('admin') === 'haxel';

@@ -9,14 +9,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       return new Response(JSON.stringify({ error: 'Faltan datos' }), { status: 400 });
     }
 
-    let db;
-    try {
-        // @ts-ignore
-        const { env } = await import('cloudflare:workers');
-        db = env.DB;
-    } catch(e) {
-        db = locals.runtime?.env?.DB;
-    }
+    let db = locals.runtime?.env?.DB;
 
     if (!db) {
         return new Response(JSON.stringify({ error: 'Database not bound' }), { status: 500 });
