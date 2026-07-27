@@ -1,43 +1,25 @@
-# Astro Starter Kit: Minimal
+# Deployment Guide for Cloudflare Pages
 
-```sh
-npm create astro@latest -- --template minimal
-```
+1. **Create the Database:**
+   ```bash
+   npx wrangler d1 create copa-haxel-db
+   ```
+   *Take note of the `database_id` provided in the terminal output.*
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+2. **Configure Wrangler:**
+   Open `wrangler.toml` in your code editor and update the `database_id` field under the `[[d1_databases]]` section with the ID you received in Step 1.
 
-## 🚀 Project Structure
+3. **Initialize the Database Schema:**
+   Run this command to create the necessary tables in your Cloudflare D1 database:
+   ```bash
+   npx wrangler d1 execute copa-haxel-db --file=./schema.sql --remote
+   ```
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+4. **Deploy to Cloudflare Pages:**
+   *Important:* If you haven't logged in, run `npx wrangler login` first.
+   Then, deploy the application using the Pages CLI, relying on the project settings:
+   ```bash
+   npm run build
+   npx wrangler pages deploy dist/client --project-name=copa-haxel
+   ```
+   **Note**: The deployment command relies on `dist/client` being the output folder, matching the `pages_build_output_dir` in `wrangler.toml` (which tells Cloudflare where the static assets are, and implicitly where `../server/_worker.js` lives).
