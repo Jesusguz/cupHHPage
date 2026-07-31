@@ -17,9 +17,8 @@
 
 4. **Deploy to Cloudflare Pages:**
    *Important:* If you haven't logged in, run `npx wrangler login` first.
-   Then, deploy the application using the Pages direct deployment feature:
+   Then, deploy the application using the Pages CLI, relying on the project settings:
    ```bash
    npm run build
    npx wrangler pages deploy dist --project-name=copa-haxel
    ```
-   **Note**: With the newest `@astrojs/cloudflare` version and Astro 5+, you must deploy the `dist` directory when using `pages deploy`. Wrangler automatically bundles `_worker.js` found in `dist/server` into the final deployment.

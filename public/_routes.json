@@ -4,6 +4,9 @@
     "/*"
   ],
   "exclude": [
-    "/_astro/*"
+    "/_astro/*",
+    "/favicon.svg",
+    "/favicon.ico",
+    "/_worker.js"
   ]
 }
