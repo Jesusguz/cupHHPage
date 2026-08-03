@@ -10,13 +10,10 @@ if (fs.existsSync(file)) {
   }
 
   const clean = {
-    configPath: data.configPath,
     name: data.name,
-    main: data.main,
     compatibility_date: data.compatibility_date,
     pages_build_output_dir: data.pages_build_output_dir,
-    d1_databases: data.d1_databases,
-    rules: data.rules
+    d1_databases: data.d1_databases
   };
   fs.writeFileSync(file, JSON.stringify(clean, null, 2));
 }
