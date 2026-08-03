@@ -1,8 +1,7 @@
 name = "copa-haxel"
 compatibility_date = "2024-03-20"
-pages_build_output_dir = "dist"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "copa-haxel-db"
-database_id = "YOUR_DATABASE_ID"
+database_id = "8c8208e6-8b8d-4b15-ad83-191826bad58d"
