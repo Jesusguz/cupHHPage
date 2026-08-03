@@ -3,9 +3,9 @@ import Layout from '../layouts/Layout.astro';
 import { TablaGeneral } from '../components/TablaGeneral';
 import { LeadersSidebar } from '../components/LeadersSidebar';
 import { AdminForm } from '../components/AdminForm';
+import { env } from 'cloudflare:workers';
 
-// Safe extraction of DB from Astro.locals
-let db = Astro.locals.runtime?.env?.DB;
+let db = env.DB;
 
 let equipos = [];
 let jugadores = [];

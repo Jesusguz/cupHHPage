@@ -1,12 +1,5 @@
 {
   "version": 1,
-  "include": [
-    "/*"
-  ],
-  "exclude": [
-    "/_astro/*",
-    "/favicon.svg",
-    "/favicon.ico",
-    "/_worker.js"
-  ]
+  "include": ["/*"],
+  "exclude": ["/_astro/*", "/favicon.ico", "/favicon.svg"]
 }

@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
+import { env } from 'cloudflare:workers';
 
-export const POST: APIRoute = async ({ request, locals }) => {
+export const POST: APIRoute = async ({ request }) => {
   try {
     const data = await request.json();
     const { partidoId, golesLocal, golesVisitante } = data;
@@ -9,7 +10,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       return new Response(JSON.stringify({ error: 'Faltan datos' }), { status: 400 });
     }
 
-    let db = locals.runtime?.env?.DB;
+    let db = env.DB;
 
     if (!db) {
         return new Response(JSON.stringify({ error: 'Database not bound' }), { status: 500 });
@@ -29,8 +30,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       .bind(golesLocal, golesVisitante, 'finalizado', partidoId)
       .run();
 
-    // Actualizar Equipos stats is complex, para el MVP simplificaremos o asumiremos que se recalcula.
-    // Here we'll do a basic update for demo purposes.
     // Calculate stats
     let ptsLocal = 0;
     let ptsVisitante = 0;
