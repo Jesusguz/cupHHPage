@@ -44,24 +44,102 @@ const isAdmin = Astro.url.searchParams.get('admin') === 'haxel';
 
 <Layout title="Copa Haxel Hernández">
   <main class="min-h-screen bg-[#09090b] text-zinc-100">
-    <section class="relative overflow-hidden border-b border-white/10">
-      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.16),transparent_32%),linear-gradient(135deg,rgba(24,24,27,0.98),rgba(9,9,11,1)_55%,rgba(20,20,20,0.98))]"></div>
+    <section class="relative isolate overflow-hidden border-b border-white/10">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(52,211,153,0.20),transparent_22%),radial-gradient(circle_at_top_right,rgba(16,185,129,0.14),transparent_20%),linear-gradient(135deg,#030712_0%,#09090b_42%,#0f172a_100%)]"></div>
       <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-      <div class="absolute left-1/2 top-24 h-72 w-72 -translate-x-1/2 rounded-full bg-emerald-500/10 blur-3xl"></div>
+      <div class="absolute -left-16 top-24 h-72 w-72 rounded-full bg-emerald-500/12 blur-3xl"></div>
+      <div class="absolute right-0 top-12 h-80 w-80 rounded-full bg-cyan-400/8 blur-3xl"></div>
+      <div class="absolute inset-0 opacity-[0.08]" style="background-image:linear-gradient(rgba(255,255,255,0.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.18)_1px,transparent_1px);background-size:72px 72px;"></div>
 
-      <div class="relative mx-auto flex min-h-[32rem] max-w-7xl items-center px-4 py-20 sm:px-6 lg:px-8">
-        <div class="max-w-4xl">
-          <div class="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-zinc-300 backdrop-blur-md">
-            Torneo de fútbol local
+      <div class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div class="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+          <div class="max-w-3xl">
+            <div class="inline-flex items-center rounded-full border border-white/10 bg-white/6 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.35em] text-zinc-300 backdrop-blur-md">
+              Copa conmemorativa
+            </div>
+            <h1 class="mt-6 text-5xl font-black leading-none tracking-tight text-transparent bg-gradient-to-r from-white via-zinc-100 to-zinc-500 bg-clip-text sm:text-6xl lg:text-7xl">
+              Copa Haxel Hernández
+            </h1>
+            <p class="mt-6 max-w-2xl text-lg leading-8 text-zinc-300 sm:text-xl">
+              Un homenaje vivo al carácter, la pasión y el legado de una historia que sigue inspirando a toda la comunidad dentro y fuera de la cancha.
+            </p>
+
+            <div class="mt-8 flex flex-wrap gap-3 text-sm text-zinc-200">
+              <div class="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-md">Ejido Ignacio Zaragoza, Chihuahua</div>
+              <div class="rounded-full border border-emerald-400/20 bg-emerald-500/10 px-4 py-2 text-emerald-200 backdrop-blur-md">Registro de equipos abierto</div>
+              <div class="rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-md">Tabla y líderes en vivo</div>
+            </div>
+
+            <div class="mt-8" id="hero-actions-root"></div>
+
+            <div class="mt-10 grid gap-4 sm:grid-cols-3">
+              <div class="rounded-3xl border border-white/8 bg-white/[0.04] p-4 backdrop-blur-md">
+                <p class="text-xs uppercase tracking-[0.25em] text-zinc-400">Legado</p>
+                <p class="mt-2 text-2xl font-black text-white">1 copa</p>
+                <p class="mt-2 text-sm text-zinc-400">Un emblema que honra memoria, esfuerzo y orgullo local.</p>
+              </div>
+              <div class="rounded-3xl border border-white/8 bg-white/[0.04] p-4 backdrop-blur-md">
+                <p class="text-xs uppercase tracking-[0.25em] text-zinc-400">Comunidad</p>
+                <p class="mt-2 text-2xl font-black text-white">{equipos.length}</p>
+                <p class="mt-2 text-sm text-zinc-400">Equipos que alimentan la rivalidad sana y el sentido de pertenencia.</p>
+              </div>
+              <div class="rounded-3xl border border-white/8 bg-white/[0.04] p-4 backdrop-blur-md">
+                <p class="text-xs uppercase tracking-[0.25em] text-zinc-400">Talento</p>
+                <p class="mt-2 text-2xl font-black text-white">{jugadores.length}</p>
+                <p class="mt-2 text-sm text-zinc-400">Jugadores que sostienen el espectáculo y escriben esta historia.</p>
+              </div>
+            </div>
           </div>
-          <h1 class="mt-6 text-5xl font-black tracking-tight text-transparent bg-gradient-to-r from-white to-zinc-500 bg-clip-text sm:text-6xl lg:text-7xl">
-            Copa Haxel Hernández
-          </h1>
-          <p class="mt-6 max-w-2xl text-lg leading-8 text-zinc-300 sm:text-xl">
-            Una experiencia de torneo con presencia premium, seguimiento en vivo y una identidad visual a la altura del legado que representa esta copa.
-          </p>
-          <div class="mt-8" id="hero-actions-root"></div>
+
+          <div class="relative">
+            <div class="absolute inset-8 rounded-full bg-emerald-500/12 blur-3xl"></div>
+            <div class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_30px_100px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+              <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(52,211,153,0.18),transparent_40%)]"></div>
+              <div class="relative">
+                <div class="mx-auto flex max-w-[26rem] items-center justify-center">
+                  <img
+                    src="/logo-copa-haxel.png"
+                    alt="Logo de la Copa Haxel Hernández"
+                    class="w-full drop-shadow-[0_25px_45px_rgba(16,185,129,0.2)]"
+                  />
+                </div>
+
+                <div class="mt-6 rounded-[1.75rem] border border-white/8 bg-black/25 p-5">
+                  <p class="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300/80">Manifiesto</p>
+                  <p class="mt-3 text-base leading-7 text-zinc-200">
+                    “Aquí no solo se disputa un torneo: se celebra una memoria, se enciende el orgullo del pueblo y se defiende el legado con el corazón.”
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <section class="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div class="grid gap-6 lg:grid-cols-3">
+        <article class="rounded-[1.8rem] border border-white/8 bg-zinc-900/40 p-6 backdrop-blur-md">
+          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300/80">Historia</p>
+          <h2 class="mt-3 text-2xl font-black tracking-tight text-white">Un torneo con identidad</h2>
+          <p class="mt-3 text-sm leading-7 text-zinc-300">
+            La copa nace para preservar un nombre que sigue pesando en la memoria colectiva y convertir cada partido en una muestra de respeto, entrega y unión.
+          </p>
+        </article>
+        <article class="rounded-[1.8rem] border border-white/8 bg-zinc-900/40 p-6 backdrop-blur-md">
+          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300/80">Ambiente</p>
+          <h2 class="mt-3 text-2xl font-black tracking-tight text-white">Fútbol con atmósfera premium</h2>
+          <p class="mt-3 text-sm leading-7 text-zinc-300">
+            Tabla, lideratos, administración del torneo y puntos de encuentro integrados en una sola experiencia visual con presencia, orden y carácter.
+          </p>
+        </article>
+        <article class="rounded-[1.8rem] border border-white/8 bg-zinc-900/40 p-6 backdrop-blur-md">
+          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300/80">Sede</p>
+          <h2 class="mt-3 text-2xl font-black tracking-tight text-white">Ejido Ignacio Zaragoza</h2>
+          <p class="mt-3 text-sm leading-7 text-zinc-300">
+            La comunidad es parte del espectáculo: la cancha, la gente y el recorrido al lugar forman parte del ritual de cada jornada.
+          </p>
+        </article>
       </div>
     </section>
 
@@ -70,20 +148,85 @@ const isAdmin = Astro.url.searchParams.get('admin') === 'haxel';
 
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div class="space-y-8 lg:col-span-2">
-          <div class="rounded-2xl border border-white/5 bg-zinc-900/40 p-3 backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
+          <div class="rounded-[2rem] border border-white/8 bg-zinc-900/40 p-3 backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.35)]">
             <TablaGeneral equipos={equipos} client:load />
           </div>
 
+          <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+            <div class="overflow-hidden rounded-[2rem] border border-white/8 bg-zinc-900/40 backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.3)]">
+              <div class="border-b border-white/8 px-6 py-5">
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300/80">Ubicación oficial</p>
+                <h2 class="mt-2 text-2xl font-black tracking-tight text-white">Sede del torneo</h2>
+                <p class="mt-2 max-w-xl text-sm leading-7 text-zinc-300">
+                  Vive la copa en el corazón de Ejido Ignacio Zaragoza. La cancha es punto de encuentro, memoria y celebración comunitaria.
+                </p>
+              </div>
+              <div class="aspect-[16/10]">
+                <iframe
+                  title="Mapa de la sede de la Copa Haxel Hernández"
+                  src="https://www.google.com/maps?q=Ejido%20Ignacio%20Zaragoza%2C%20Chihuahua%2C%20Mexico&z=14&output=embed"
+                  class="h-full w-full"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+            </div>
+
+            <div class="rounded-[2rem] border border-white/8 bg-zinc-900/40 p-6 backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.3)]">
+              <p class="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300/80">Cómo llegar</p>
+              <h2 class="mt-2 text-2xl font-black tracking-tight text-white">Llega al corazón del legado</h2>
+              <p class="mt-4 text-sm leading-7 text-zinc-300">
+                La experiencia inicia desde el camino. Comparte la ubicación con tu equipo, organiza la llegada y conviértelo en parte del ritual de cada jornada.
+              </p>
+              <div class="mt-6 space-y-3">
+                <div class="rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <p class="text-sm font-semibold text-white">Sede referencial</p>
+                  <p class="mt-2 text-sm text-zinc-400">Ejido Ignacio Zaragoza, Chihuahua, México</p>
+                </div>
+                <div class="rounded-2xl border border-white/8 bg-black/20 p-4">
+                  <p class="text-sm font-semibold text-white">Ambiente esperado</p>
+                  <p class="mt-2 text-sm text-zinc-400">Cancha local, comunidad presente y ambiente conmemorativo.</p>
+                </div>
+              </div>
+              <a
+                href="https://maps.app.goo.gl/mwxo84PCRQA9GX2p9"
+                target="_blank"
+                rel="noreferrer"
+                class="mt-6 inline-flex items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-500 px-6 py-3 text-sm font-bold text-black shadow-[0_0_20px_rgba(16,185,129,0.25)] transition hover:bg-emerald-400"
+              >
+                Abrir en Google Maps
+              </a>
+            </div>
+          </div>
+
           {isAdmin && (
-            <div class="rounded-2xl border border-white/5 bg-zinc-900/40 p-3 backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.3)]">
+            <div class="rounded-[2rem] border border-white/8 bg-zinc-900/40 p-3 backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.3)]">
               <AdminForm partidos={partidosPendientes} client:load />
             </div>
           )}
         </div>
 
-        <div class="lg:col-span-1">
-          <div class="rounded-2xl border border-white/5 bg-zinc-900/40 p-3 backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.3)]">
+        <div class="space-y-8 lg:col-span-1">
+          <div class="rounded-[2rem] border border-white/8 bg-zinc-900/40 p-3 backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.3)]">
             <LeadersSidebar jugadores={jugadores} client:load />
+          </div>
+
+          <div class="rounded-[2rem] border border-emerald-500/15 bg-gradient-to-br from-emerald-500/10 via-zinc-900/80 to-zinc-950 p-6 backdrop-blur-md">
+            <p class="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300/80">Legado vivo</p>
+            <h2 class="mt-2 text-2xl font-black tracking-tight text-white">Más que resultados</h2>
+            <p class="mt-4 text-sm leading-7 text-zinc-300">
+              Cada jornada suma recuerdos, cada uniforme carga una historia y cada gol se convierte en una forma de honrar un nombre que sigue convocando a toda la afición.
+            </p>
+            <div class="mt-6 grid gap-3">
+              <div class="rounded-2xl border border-white/8 bg-black/20 p-4">
+                <p class="text-sm font-semibold text-white">Presencia visual</p>
+                <p class="mt-2 text-sm text-zinc-400">Glassmorphism, contraste cinematográfico y acentos esmeralda para reforzar el carácter del torneo.</p>
+              </div>
+              <div class="rounded-2xl border border-white/8 bg-black/20 p-4">
+                <p class="text-sm font-semibold text-white">Experiencia</p>
+                <p class="mt-2 text-sm text-zinc-400">Registro, clasificación, lideratos y ubicación reunidos en una portada con intención y jerarquía real.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

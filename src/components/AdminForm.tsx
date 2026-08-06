@@ -56,13 +56,16 @@ export const AdminForm: React.FC<Props> = ({ partidos }) => {
   };
 
   return (
-    <div className="card p-6 rounded-lg shadow-lg">
-      <h3 className="text-xl font-bold mb-4 text-emerald-500">Actualizar Partido (Admin)</h3>
+    <div className="rounded-[1.6rem] border border-white/8 bg-white/[0.03] p-6 backdrop-blur-md">
+      <div className="mb-5">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-400/70">Panel administrativo</p>
+        <h3 className="mt-2 text-2xl font-black tracking-tight text-white">Actualizar Partido</h3>
+      </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1">Partido</label>
+          <label className="mb-2 block text-sm font-medium text-zinc-200">Partido</label>
           <select
-            className="w-full bg-black/20 border border-gray-700 rounded p-2 focus:border-emerald-500 focus:outline-none"
+            className="w-full rounded-2xl border border-white/10 bg-black/20 p-3 text-zinc-100 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/60"
             value={partidoId}
             onChange={(e) => setPartidoId(e.target.value)}
             required
@@ -78,22 +81,22 @@ export const AdminForm: React.FC<Props> = ({ partidos }) => {
 
         <div className="flex gap-4">
           <div className="flex-1">
-            <label className="block text-sm font-medium mb-1">Goles Local</label>
+            <label className="mb-2 block text-sm font-medium text-zinc-200">Goles Local</label>
             <input
               type="number"
               min="0"
-              className="w-full bg-black/20 border border-gray-700 rounded p-2 focus:border-emerald-500 focus:outline-none"
+              className="w-full rounded-2xl border border-white/10 bg-black/20 p-3 text-zinc-100 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/60"
               value={golesLocal}
               onChange={(e) => setGolesLocal(e.target.value)}
               required
             />
           </div>
           <div className="flex-1">
-            <label className="block text-sm font-medium mb-1">Goles Visitante</label>
+            <label className="mb-2 block text-sm font-medium text-zinc-200">Goles Visitante</label>
             <input
               type="number"
               min="0"
-              className="w-full bg-black/20 border border-gray-700 rounded p-2 focus:border-emerald-500 focus:outline-none"
+              className="w-full rounded-2xl border border-white/10 bg-black/20 p-3 text-zinc-100 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/60"
               value={golesVisitante}
               onChange={(e) => setGolesVisitante(e.target.value)}
               required
@@ -104,11 +107,11 @@ export const AdminForm: React.FC<Props> = ({ partidos }) => {
         <button
           type="submit"
           disabled={loading}
-          className="mt-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded transition-colors disabled:opacity-50"
+          className="mt-2 rounded-2xl bg-emerald-500 px-5 py-3 font-bold text-black shadow-[0_0_24px_rgba(16,185,129,0.28)] transition hover:bg-emerald-400 disabled:opacity-50"
         >
           {loading ? 'Actualizando...' : 'Actualizar Marcador'}
         </button>
-        {message && <p className="text-sm mt-2 text-center text-emerald-400">{message}</p>}
+        {message && <p className="mt-2 text-center text-sm text-emerald-400">{message}</p>}
       </form>
     </div>
   );

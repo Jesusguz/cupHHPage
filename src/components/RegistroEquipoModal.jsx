@@ -70,6 +70,7 @@ export default function RegistroEquipoModal({ isOpen, onClose }) {
         className="relative w-full max-w-xl rounded-3xl border border-white/10 bg-zinc-900/50 p-6 text-zinc-100 shadow-2xl shadow-emerald-950/30 backdrop-blur-xl sm:p-8"
         onClick={(event) => event.stopPropagation()}
       >
+        <div className="pointer-events-none absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_top,rgba(52,211,153,0.18),transparent_38%)]"></div>
         <button
           type="button"
           onClick={handleClose}
@@ -80,7 +81,7 @@ export default function RegistroEquipoModal({ isOpen, onClose }) {
           ×
         </button>
 
-        <div className="mb-8">
+        <div className="relative mb-8">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.35em] text-emerald-400/80">
             Registro oficial
           </p>
@@ -95,7 +96,7 @@ export default function RegistroEquipoModal({ isOpen, onClose }) {
           </p>
         </div>
 
-        <form className="space-y-5" onSubmit={handleSubmit}>
+        <form className="relative space-y-5" onSubmit={handleSubmit}>
           <label className="block">
             <span className="mb-2 block text-sm font-medium text-zinc-200">Nombre del Equipo</span>
             <input

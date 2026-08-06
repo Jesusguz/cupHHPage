@@ -24,10 +24,19 @@ export const TablaGeneral: React.FC<Props> = ({ equipos }) => {
   });
 
   return (
-    <div className="card overflow-x-auto rounded-lg p-4 shadow-lg mb-8">
-      <h2 className="text-2xl font-bold mb-4 text-emerald-500">Tabla General</h2>
-      <table className="w-full text-sm text-left">
-        <thead className="text-xs uppercase bg-black/20">
+    <div className="overflow-x-auto rounded-[1.6rem] border border-white/8 bg-transparent p-4 text-zinc-100 shadow-none">
+      <div className="mb-5 flex items-end justify-between gap-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-400/70">Clasificación</p>
+          <h2 className="mt-2 text-2xl font-black tracking-tight text-white">Tabla General</h2>
+        </div>
+        <div className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium text-zinc-300">
+          {sortedEquipos.length} equipos
+        </div>
+      </div>
+
+      <table className="w-full min-w-[720px] text-sm text-left">
+        <thead className="bg-white/[0.03] text-xs uppercase text-zinc-400">
           <tr>
             <th className="px-4 py-3 font-medium">Equipo</th>
             <th className="px-2 py-3 font-medium text-center !text-center">PTS</th>
@@ -40,26 +49,30 @@ export const TablaGeneral: React.FC<Props> = ({ equipos }) => {
             <th className="px-2 py-3 font-medium text-center !text-center">DIF</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-700/50">
+        <tbody className="divide-y divide-white/6">
           {sortedEquipos.map((equipo, index) => (
-            <tr key={equipo.id} className="hover:bg-black/10 transition-colors">
-              <td className="px-4 py-3 font-semibold flex items-center gap-2">
-                <span className="text-gray-400 w-4">{index + 1}</span>
-                {equipo.nombre}
+            <tr key={equipo.id} className="transition-colors hover:bg-white/[0.03]">
+              <td className="px-4 py-4 font-semibold">
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/8 bg-white/5 text-xs font-bold text-emerald-300">
+                    {index + 1}
+                  </span>
+                  <span className="tracking-wide text-white">{equipo.nombre}</span>
+                </div>
               </td>
-              <td className="px-2 py-3 font-bold text-emerald-500 text-center !text-center">{equipo.pts}</td>
-              <td className="px-2 py-3 text-center !text-center">{equipo.jj}</td>
-              <td className="px-2 py-3 text-center !text-center">{equipo.jg}</td>
-              <td className="px-2 py-3 text-center !text-center">{equipo.je}</td>
-              <td className="px-2 py-3 text-center !text-center">{equipo.jp}</td>
-              <td className="px-2 py-3 text-center !text-center">{equipo.gf}</td>
-              <td className="px-2 py-3 text-center !text-center">{equipo.gc}</td>
-              <td className="px-2 py-3 text-center !text-center font-medium">{equipo.gf - equipo.gc}</td>
+              <td className="px-2 py-4 text-center !text-center font-bold text-emerald-400">{equipo.pts}</td>
+              <td className="px-2 py-4 text-center !text-center text-zinc-300">{equipo.jj}</td>
+              <td className="px-2 py-4 text-center !text-center text-zinc-300">{equipo.jg}</td>
+              <td className="px-2 py-4 text-center !text-center text-zinc-300">{equipo.je}</td>
+              <td className="px-2 py-4 text-center !text-center text-zinc-300">{equipo.jp}</td>
+              <td className="px-2 py-4 text-center !text-center text-zinc-300">{equipo.gf}</td>
+              <td className="px-2 py-4 text-center !text-center text-zinc-300">{equipo.gc}</td>
+              <td className="px-2 py-4 text-center !text-center font-medium text-white">{equipo.gf - equipo.gc}</td>
             </tr>
           ))}
           {sortedEquipos.length === 0 && (
             <tr>
-              <td colSpan={9} className="text-center py-4 text-gray-500">No hay equipos registrados.</td>
+              <td colSpan={9} className="py-10 text-center text-zinc-500">No hay equipos registrados.</td>
             </tr>
           )}
         </tbody>
