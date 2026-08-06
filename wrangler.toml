@@ -1,5 +1,5 @@
 name = "cuphhpage"
-main = "./dist/_worker.js/index.js"
+main = "@astrojs/cloudflare/entrypoints/server"
 compatibility_date = "2026-08-06"
 compatibility_flags = ["nodejs_compat"]
 
