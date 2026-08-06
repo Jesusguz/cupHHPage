@@ -3,16 +3,24 @@ import Layout from '../layouts/Layout.astro';
 import { TablaGeneral } from '../components/TablaGeneral';
 import { LeadersSidebar } from '../components/LeadersSidebar';
 import { AdminForm } from '../components/AdminForm';
+import { PlantillasShowcase } from '../components/PlantillasShowcase';
+import { ReconocimientosJornada } from '../components/ReconocimientosJornada';
+import { AdminRecognitionForm } from '../components/AdminRecognitionForm';
+import { PlayerStatsAdminForm } from '../components/PlayerStatsAdminForm';
 import { env } from 'cloudflare:workers';
+import { ensureTournamentSchema } from '../lib/tournamentSchema';
 
 let db = env.DB;
 
 let equipos = [];
 let jugadores = [];
 let partidosPendientes = [];
+let reconocimientos = [];
 
 if (db) {
   try {
+    await ensureTournamentSchema(db);
+
     const { results: resEquipos } = await db.prepare('SELECT * FROM Equipos ORDER BY pts DESC').all();
     equipos = resEquipos || [];
 
@@ -22,6 +30,23 @@ if (db) {
       LEFT JOIN Equipos e ON j.equipo_id = e.id
     `).all();
     jugadores = resJugadores || [];
+
+    const { results: resReconocimientos } = await db.prepare(`
+      SELECT
+        r.*,
+        j.nombre as jugador_nombre,
+        j.foto_url,
+        j.numero,
+        j.goles,
+        j.intensidad_index,
+        e.nombre as equipo_nombre
+      FROM Reconocimientos r
+      LEFT JOIN Jugadores j ON r.jugador_id = j.id
+      LEFT JOIN Equipos e ON j.equipo_id = e.id
+      ORDER BY r.jornada DESC, r.created_at DESC
+      LIMIT 6
+    `).all();
+    reconocimientos = resReconocimientos || [];
 
     const { results: resPartidos } = await db.prepare(`
       SELECT p.*, el.nombre as local_nombre, ev.nombre as visitante_nombre
@@ -39,6 +64,21 @@ if (db) {
 }
 
 const isAdmin = Astro.url.searchParams.get('admin') === 'haxel';
+const jugadoresDestacados = [...jugadores]
+  .sort((a, b) => (b.goles + b.intensidad_index) - (a.goles + a.intensidad_index))
+  .slice(0, 3);
+const reconocimientosVisibles = reconocimientos.length > 0 ? reconocimientos : jugadoresDestacados.map((jugador, index) => ({
+  jornada: index + 1,
+  categoria: index === 0 ? 'MVP' : index === 1 ? 'Goleador' : 'Figura',
+  titulo: index === 0 ? 'Impacto inmediato' : index === 1 ? 'Gol que pesa' : 'Presencia total',
+  descripcion: 'Destacado por su impacto ofensivo y su protagonismo dentro del torneo.',
+  jugador_nombre: jugador.nombre,
+  equipo_nombre: jugador.equipo_nombre,
+  foto_url: jugador.foto_url,
+  numero: jugador.numero,
+  goles: jugador.goles,
+  intensidad_index: jugador.intensidad_index,
+}));
 
 ---
 
@@ -231,6 +271,27 @@ const isAdmin = Astro.url.searchParams.get('admin') === 'haxel';
         </div>
       </div>
     </section>
+
+    <section class="relative mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <div class="rounded-[2rem] border border-white/8 bg-zinc-900/40 p-6 backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.28)]">
+        <ReconocimientosJornada reconocimientos={reconocimientosVisibles} client:load />
+      </div>
+    </section>
+
+    <section class="relative mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <div class="rounded-[2rem] border border-white/8 bg-zinc-900/40 p-6 backdrop-blur-md shadow-[0_18px_60px_rgba(0,0,0,0.28)]">
+        <PlantillasShowcase equipos={equipos} jugadores={jugadores} client:load />
+      </div>
+    </section>
+
+    {isAdmin && (
+      <section class="relative mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <div class="grid gap-8 xl:grid-cols-2">
+          <AdminRecognitionForm jugadores={jugadores} client:load />
+          <PlayerStatsAdminForm jugadores={jugadores} client:load />
+        </div>
+      </section>
+    )}
   </main>
 
   <script type="module">
